@@ -68,7 +68,7 @@ VulnerX/
 
 Make sure you have the following installed:
 
-- Java 17+ ([Download here](https://adoptium.net))
+- Java 17+
 - Maven (or use the included Maven Wrapper)
 - Nmap installed and added to PATH ([https://nmap.org/download.html](https://nmap.org/download.html))
 
