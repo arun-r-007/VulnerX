@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AI Security System Scanner</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4a6fd7;
+            --primary-dark: #3d5cb8;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --white: #ffffff;
+            --body-bg: #f5f7fb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--body-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .navbar {
+            background-color: var(--primary);
+            padding: 15px 0;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 111, 215, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            border: 1px solid #eee;
+        }
+        
+        .vulnerability-list {
+            list-style-type: none;
+        }
+        
+        .vulnerability-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #fff8f8;
+            border-left: 4px solid var(--danger);
+            border-radius: 4px;
+        }
+        
+        .vulnerability-item.none {
+            background-color: #f8fff8;
+            border-left: 4px solid var(--success);
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .scan-details {
+            display: flex;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        
+        .scan-details span {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .scan-details i {
+            margin-right: 5px;
+        }
+        
+        .results-container {
+            display: none;
+        }
+        
+        .severity-high {
+            color: var(--danger);
+        }
+        
+        .severity-medium {
+            color: var(--warning);
+        }
+        
+        .severity-low {
+            color: var(--info);
+        }
+        
+        .mode-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .mode-quick {
+            background-color: #e9f5fe;
+            color: #0084ff;
+        }
+        
+        .mode-deep {
+            background-color: #fde8e8;
+            color: #e02424;
+        }
+        
+        .mode-custom {
+            background-color: #edf5ea;
+            color: #057a55;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .card {
+                padding: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <i class="fas fa-shield-alt"></i> Security System Scanner
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-search"></i> Scan Configuration
+            </div>
+            <form method="post" action="/scan" id="scanForm">
+                <div class="form-group">
+                    <label for="target"><i class="fas fa-crosshairs"></i> Target URL/IP Address</label>
+                    <input type="text" id="target" name="target" placeholder="Enter domain name or IP address (e.g. example.com or 192.168.1.1)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mode"><i class="fas fa-sliders-h"></i> Scan Mode</label>
+                    <select id="mode" name="mode">
+                        <option value="quick">Quick Scan - Fast check of common ports</option>
+                        <option value="deep">Deep Scan - Comprehensive vulnerability assessment</option>
+                        <option value="custom">Custom Scan - Important security ports only</option>
+                    </select>
+                </div>
+                
+                <div class="form-group scan-details">
+                    <span id="quickDetails"><i class="fas fa-bolt"></i> Quick: ~1 min</span>
+                    <span id="deepDetails"><i class="fas fa-shield-alt"></i> Deep: ~5-10 min</span>
+                    <span id="customDetails"><i class="fas fa-cog"></i> Custom: ~3 min</span>
+                </div>
+                
+                <button type="submit" class="btn" id="scanBtn">
+                    <i class="fas fa-radar"></i> Start Security Scan
+                </button>
+            </form>
+        </div>
+        
+        <div class="loader" id="scanLoader">
+            <div class="spinner"></div>
+            <p>Scanning target for vulnerabilities...</p>
+            <p>This may take a few minutes depending on the scan mode.</p>
+        </div>
+        
+        <div class="results-container" id="resultsContainer" th:if="${scanResults != null}">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Scan Results
+                    <span class="mode-badge" th:classappend="${'mode-' + mode}" th:text="${mode + ' scan'}"></span>
+                </div>
+                <pre th:text="${scanResults}" id="scanResults"></pre>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i> Detected Vulnerabilities
+                </div>
+                <ul class="vulnerability-list" id="vulnerabilityList">
+                    <li th:each="vuln : ${vulnerabilities}" th:class="${vuln == 'No vulnerabilities detected.' ? 'vulnerability-item none' : 'vulnerability-item'}" th:text="${vuln}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2025 AI Security System Scanner | For authorized use only
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('scanForm');
+            const loader = document.getElementById('scanLoader');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const scanBtn = document.getElementById('scanBtn');
+            
+            // Check if we have results (page might be loaded after a scan)
+            const hasResults = resultsContainer.querySelector('#scanResults')?.textContent.trim().length > 0;
+            if (hasResults) {
+                resultsContainer.style.display = 'block';
+            }
+            
+            form.addEventListener('submit', function() {
+                scanBtn.disabled = true;
+                loader.style.display = 'block';
+                
+                // Hide results until new results are loaded
+                resultsContainer.style.display = 'none';
+                
+                // This form will submit normally and the page will refresh with results
+            });
+            
+            // Mode selector highlighting
+            const mode = document.getElementById('mode');
+            mode.addEventListener('change', function() {
+                // You could add more interactivity here if needed
+            });
+        });
+    </script>
+</body>
+</html>
