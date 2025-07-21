@@ -1,108 +1,125 @@
-# 🔍 NMAP AI Security Scanner
+# VulnerX - AI-powered Web-based Security Scanner
 
-**NMAP AI Security Scanner** is a Spring Boot–based web application designed for intelligent network security assessment. It integrates tools like **Nmap**, **Banner Grabbing**, and **AI-assisted Vulnerability Detection** within a user-friendly web interface powered by **Thymeleaf**.
-
----
-
-## 🚀 Features
-
-- ✅ AI-powered scanning modules (Quick, Deep, Custom)
-- 🧠 Vulnerability detection using internal heuristics
-- 🌐 Nmap-based network analysis
-- 🛰️ Banner grabbing for service info
-- 💻 Web interface with Thymeleaf templates
-- 📊 Clean and animated frontend with scan result display
+**VulnerX** is an AI-powered web-based security scanner that identifies system vulnerabilities using Nmap, banner grabbing, and intelligent threat detection techniques. Designed for ethical security testing, it provides deep insights into system exposures through an intuitive interface built with Spring Boot and Thymeleaf.
 
 ---
 
-## 📦 Tech Stack
+## Features
 
-- Java 17+
-- Spring Boot
-- Maven
-- Thymeleaf (HTML Templating)
-- CSS / FontAwesome
-- Nmap (for scanning)
-- Custom AI module (under `/ai`)
-  
+- **AI-Powered Vulnerability Detection**
+- **Nmap-Based Network Scanning**
+- **Banner Grabbing for Service Fingerprinting**
+- **Dynamic Scan Result Dashboard**
+- **Quick / Deep / Custom Scan Modes**
+- **Modular Scanner Components**
+- **Responsive UI with Thymeleaf Templates**
+
 ---
 
-## 📂 Project Structure
+## Tech Stack
+
+- **Java 17+**
+- **Spring Boot**
+- **Maven**
+- **Thymeleaf (HTML templating)**
+- **Nmap (System command integration)**
+- **Font Awesome**
+- **Custom CSS**
+
+---
+
+## Project Structure
 
 ```
 
-NMAP/
+VulnerX/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/securitysystem/
-│   │   │   ├── ai/                     # AI logic
-│   │   │   ├── controller/             # Web Controllers (Home, Scanner)
-│   │   │   ├── idps/                   # Intrusion detection logic
-│   │   │   ├── logger/                 # Logging utilities
-│   │   │   ├── main/                   # Main app class, runner
-│   │   │   ├── scanner/                # Scanning logic (vulnerabilities, banners)
-│   │   │   └── service/                # Nmap scan service
+│   │   │   ├── ai/                     # AI logic (optional)
+│   │   │   ├── controller/             # Home and Scanner controllers
+│   │   │   ├── idps/                   # Intrusion Detection components
+│   │   │   ├── logger/                 # Logging and audit tools
+│   │   │   ├── main/                   # Application entry point
+│   │   │   ├── scanner/                # Core scanners (Nmap, banner grab, vuln)
+│   │   │   └── service/                # Service classes
 │   │   ├── resources/
-│   │   │   ├── static/                 # Static assets (CSS/JS/images)
-│   │   │   ├── templates/              # Thymeleaf HTML files
+│   │   │   ├── static/                 # CSS, JS, images (optional)
+│   │   │   ├── templates/              # Thymeleaf HTML templates
 │   │   │   │   ├── index.html
 │   │   │   │   ├── scanner.html
 │   │   │   │   └── scanResult.html
-│   │   │   └── application.properties  # App config (port, templates, etc.)
-│   └── test/
-│       └── java/com/securitysystem/   # Unit and integration tests
-├── db.sql                             # SQL dump if using a database
-├── pom.xml                            # Maven config and dependencies
-├── README.md                          # You are here!
-├── LICENSE                            # License file
-├── mvnw / mvnw\.cmd                    # Maven wrapper
-└── .gitignore / .gitattributes        # Git config
+│   │   │   └── application.properties
+│   └── test/                           # Unit and integration tests
+├── db.sql                              # Database schema (optional)
+├── pom.xml                             # Maven dependencies and build config
+├── LICENSE                             # Project license
+├── README.md                           # This file
+├── mvnw / mvnw\.cmd                     # Maven wrapper scripts
+└── .gitignore / .gitattributes         # Git configuration
 
 ````
 
 ---
 
-## 🔧 Setup Instructions
+## Getting Started
 
-### 1. Clone the repository
+### Prerequisites
 
+Make sure you have the following installed:
+
+- Java 17+ ([Download here](https://adoptium.net))
+- Maven (or use the included Maven Wrapper)
+- Nmap installed and added to PATH ([https://nmap.org/download.html](https://nmap.org/download.html))
+
+---
+
+### How to Build and Run
+
+#### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/nmap-security-scanner.git
-cd nmap-security-scanner
+git clone https://github.com/arun-r-007/VulnerX.git
+cd VulnerX
 ````
 
-### 2. Run the application
+#### 2. Build All Dependencies
 
-If you have Maven installed:
+This will download and install all required libraries into your local Maven repository:
 
 ```bash
-mvn spring-boot:run
+./mvnw clean install
 ```
 
-Or using the Maven wrapper:
+#### 3. Run the Application
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-> The application starts at:
-> 👉 [http://localhost:8080](http://localhost:8080)
+Or with Maven installed globally:
+
+```bash
+mvn spring-boot:run
+```
+
+#### Access the Application
+
+> Navigate to:
+> [http://localhost:8080](http://localhost:8080)
 
 ---
 
-## 🌐 Web Pages
+## Web UI Routes
 
-| Page         | URL           | Description                              |
-| ------------ | ------------- | ---------------------------------------- |
-| Home         | `/`           | Welcome page, start scan button          |
-| Scanner      | `/scanner`    | Scan options UI                          |
-| Scan Results | `/scanResult` | Table showing scan outcome (safe/unsafe) |
+| Page         | URL           | Description                               |
+| ------------ | ------------- | ----------------------------------------- |
+| Home         | `/`           | Welcome page with scan entry button       |
+| Start Scan   | `/scanner`    | Scan options UI (quick/deep/custom)       |
+| Scan Results | `/scanResult` | Displays results in a table (safe/unsafe) |
 
 ---
 
-## 🧪 Running Tests
-
-Run all unit tests:
+## Running Tests
 
 ```bash
 mvn test
@@ -110,29 +127,32 @@ mvn test
 
 ---
 
-## 📜 License
+## Example Use Cases
 
-This project is licensed under the [MIT License](LICENSE).
-
-> ⚠️ For educational and ethical hacking purposes only.
-
----
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+* Network port analysis via Nmap
+* Checking banners for outdated or risky services
+* Quick scanning for basic misconfigurations
+* Deep vulnerability scanning using AI logic (custom module)
 
 ---
 
-## 🙏 Acknowledgments
+## Contributing
 
-* [Spring Boot](https://spring.io/)
-* [Thymeleaf](https://www.thymeleaf.org/)
-* [Nmap](https://nmap.org/)
-* [Font Awesome](https://fontawesome.com/)
+Contributions, bug reports, and feature requests are welcome!
+
+```bash
+# Steps to contribute
+1. Fork this repo
+2. Create a branch (`git checkout -b feature/my-feature`)
+3. Commit your changes
+4. Push and open a pull request
+```
 
 ---
+
+## Project Screenshots
+
+![Screenshot1](https://github.com/user-attachments/assets/b258e43b-5dac-4f4d-a23b-9b2e056225df)
+![Screenshot2](https://github.com/user-attachments/assets/0a7944af-986a-4003-ba51-c14ad5b57d2f)
+![Screenshot3](https://github.com/user-attachments/assets/2fe13fdf-d22b-4ba8-a338-9d8c975a4766)
+![Screenshot4](https://github.com/user-attachments/assets/462b2558-90df-4dc4-a142-abf5bdb86645)
