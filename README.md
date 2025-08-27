@@ -148,7 +148,7 @@ Contributions, bug reports, and feature requests are welcome!
 4. Push and open a pull request
 ```
 
----
+----
 
 ## Project Screenshots
 
